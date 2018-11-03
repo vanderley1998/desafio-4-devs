@@ -1,0 +1,45 @@
+body{
+    background-color: #CCC;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+.navbar{
+    width: 100%;
+}
+
+.section{
+    padding: 10px;
+    background-color: #FFF;
+    margin-top: 70px;
+    border-radius: 3px;
+}
+
+.form-control[name="nomeCliente"],[name="nomeContato"]{
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.form-control[name="dataMembro"]{
+    width: 200px;
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#alertForm{
+    width: 100%;
+    height: 30px;
+    background-color: tomato;
+    border: crimson solid 1px;
+    color: #FFF; 
+    display: none;
+    padding: 3px;
+    border-radius: 5px;
+    display: none;
+    font-size: 14px;
+    text-transform: uppercase;
+}

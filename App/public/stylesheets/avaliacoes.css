@@ -1,0 +1,57 @@
+body{
+    background-color: #CCC;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+.navbar{
+    width: 100%;
+}
+
+.section{
+    padding: 10px;
+    background-color: #FFF;
+    margin-top: 70px;
+    border-radius: 3px;
+}
+
+.displayflex{
+    display: flex;
+}
+
+.form-control[name="mes"],[name="ano"]{
+    width: 100px;
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.form-control[name="clientes"]{
+    margin-bottom: 10px;
+}
+
+.obs{
+    font-size: 10px;
+}
+
+#alertForm{
+    width: 100%;
+    height: 30px;
+    background-color: tomato;
+    border: crimson solid 1px;
+    color: #FFF; 
+    display: none;
+    padding: 3px;
+    border-radius: 5px;
+    display: none;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+#resultadoAvaliacao{
+    height: auto;
+    background-color: #ff8080;
+    display: none;
+}

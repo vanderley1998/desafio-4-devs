@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    .container
+        section.row
+            .avaliacao
+                h1 Avalie nosso produto      
+                p Ol&aacute; #{avaliacao.cliente.nomeCliente}, gostariamos muito de saber a sua opni&atilde;o sobre o nosso produto, pois, a partir dela conseguiremos aprimorar nossos produtos e servi&ccedil;os para melhor atender as necessidades de nossos clientes.
+                .col
+                    form(action='/avaliacao/#{avaliacao.id}/cliente/#{avaliacao.cliente.id}/confirmar', method='post', onsubmit='return validarForm(this)')
+                        .form-group
+                            label(for='nota') 1) Em uma escala de 0 a 10, qual a probabilidade de voc&ecirc; recomendar nosso produto/servi&ccedil;o a um amigo/conhecido?
+                            select#nota.form-control(name='nota')
+                                option(value='')  -- Selecione uma nota --
+                                option(value='0') Nota 0
+                                option(value='1') Nota 1         
+                                option(value='2') Nota 2         
+                                option(value='3') Nota 3         
+                                option(value='4') Nota 4         
+                                option(value='5') Nota 5         
+                                option(value='6') Nota 6         
+                                option(value='7') Nota 7         
+                                option(value='8') Nota 8         
+                                option(value='9') Nota 9         
+                                option(value='10') Nota 10
+                        .form-group
+                            label(for='nota') 2) Qual &eacute; o motivo dessa nota? 
+                            textarea#motivo.form-control(name='motivo', cols='30', rows='10')
+                            button.btn.btn-primary(type='submit') Enviar avalia&ccedil;&atilde;o      
+                #alertForm

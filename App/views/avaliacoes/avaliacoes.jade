@@ -1,0 +1,63 @@
+extends layout
+
+block content
+    include ../menu/menu_superior.jade
+    div.container
+        section.row.section
+            h3 Criar uma nova avalia&ccedil;&atilde;o:          
+            div.col
+                form(action='/avaliacoes/nova', name='avaliacoes', method='post', onsubmit=' return validarForm(this)')
+                    div.form-group.displayflex
+                        label(for='periodoAvaliacao') Per&iacute;odo da avalia&ccedil;&atilde;o:
+                        select#mes.form-control(name='mes')
+                            option(value='01') Janeiro                            
+                            option(value='02') Fevereiro   
+                            option(value='03') Mar&ccedil;o 
+                            option(value='04') Abril
+                            option(value='05') Mar&ccedil;o     
+                            option(value='06') Junho
+                            option(value='07') Julho     
+                            option(value='08') Agosto     
+                            option(value='09') Setembro    
+                            option(value='10') Outubro  
+                            option(value='11') Novembro   
+                            option(value='12') Dezembro
+                        label(for='')  / 
+                        input#ano.form-control(type='number', name='ano')
+                    div.form-group
+                        label(for='periodoAvaliacao') Selecione os clientes:
+                        select#clientes.form-control(name='clientes', multiple='')
+                            if(clientes != null)
+                                each cliente in clientes
+                                    option(value="#{cliente.id}") #{cliente.nomeCliente}
+                        p.obs (Para selecionar mais de uma pessoa, mantenha CTRL selecionado.)
+                        input.btn.btn-primary(type='submit', value='Criar avaliação')
+                    div#alertForm
+        section.row.section
+            h3 Registro de avalia&ccedil;&otilde;es:
+            div.table-responsive
+                table.table.table-striped.table-condensed.table-hover
+                    thead
+                        th Per&iacute;odo
+                        th Qtd de participantes
+                        th A&ccedil;&otilde;es
+                    tbody
+                    if(avaliacoes != null)
+                        each avaliacao in avaliacoes
+                            tr
+                                td.periodoAvaliacao
+                                    //onclick="exibirDetalhes(`avaliacao#{avaliacao.id}`)", <------ AQUI
+                                    a.btn.btn-info.btn-xs(href="/avaliacoes/#{avaliacao.id}/detalhes/", target="_blank", title="#{avaliacao.mes} / #{avaliacao.ano}") #{avaliacao.mes} / #{avaliacao.ano}
+                                td #{avaliacao.clientes.length}
+                                td
+                                    a.btn.btn-danger.btn-xs(href="/avaliacoes/delete/#{avaliacao.id}", onclick="return confirm('Deseja realmente remover?')") Cancelar avaliação
+                            tr(id="resultadoAvaliacao", class="avaliacao#{avaliacao.id}",  style="display:none;")
+                                td(colspan="3")
+                                    h4 Detalhes da avaliação:
+                                    ul
+                                        li(id="qtdCliAva") Qtd. de clientes que avaliaram:
+                                        li(id="resultAva") Resultado:
+                                    p Para compartilhar o link da avaliação, encaminhe o link da seguinte forma:
+                                    ul
+                                        li
+                                            a(href="#") http://localhost:3000/avaliacao/{{avaliacao.id}}/cliente/CODIGO_DO_CLIENTE

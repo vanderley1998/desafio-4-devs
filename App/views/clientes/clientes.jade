@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    include ../menu/menu_superior.jade
+    .container
+        section.row.section
+            h3 Cadastrar novo cliente:
+            .col
+                form(action='/clientes/novo', method='POST', onsubmit='return validarForm(this)')
+                    .form-group
+                        label(for='nomeCliente') Nome do cliente:   
+                        input#nomeCliente.form-control(type='text', name='nomeCliente')
+                    .form-group
+                        label(for='nomeCliente') Nome do contato:
+                        input#nomeContato.form-control(type='text', name='nomeContato')
+                    .form-group
+                        label(for='nomeCliente') Membro desde:
+                        input#membroDesde.form-control(type='date', name='membroDesde', maxlength='10')
+                    .form-group
+                        button.btn.btn-primary(type='submit') Cadastrar cliente
+                    #alertForm
+        section.row.section
+            h3 Clientes cadastrados:   
+            .table-responsive
+                table.table.table-striped.table-condensed.table-hover
+                    thead
+                        th Nome do cliente     
+                        th Nome do contato       
+                        th Membro desde
+                        th Sinalizador       
+                        th A&ccedil;&otilde;es      
+                    tbody
+                    if(clientes != null)
+                        each cliente in clientes
+                            tr
+                                td #{cliente.nomeCliente}
+                                td #{cliente.nomeContato}
+                                td #{cliente.membroDesde}
+                                td #{cliente.sinalizador}
+                                td
+                                    a.btn.btn-danger.btn-xs(href="clientes/delete/#{cliente.id}", onclick="return confirm('Deseja realmente remover?')") Remover
+                            tr

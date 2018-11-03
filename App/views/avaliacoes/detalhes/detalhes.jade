@@ -1,0 +1,57 @@
+extends layout
+
+block content
+    include ../../menu/menu_superior.jade
+    div.container
+        section.row.section
+            h3 Compartilhar os links
+            h5 Links de acesso de cada cliente selecionado para a avaliação.
+            div.table-responsive
+                table.table.table-striped.table-condensed.table-hover
+                    thead
+                        th Link
+                    tbody
+                    if(avaliacao.clientes != null)
+                        - var idAvaliacao = avaliacao.id
+                        each cliente in avaliacao.clientes
+                            tr
+                                td 
+                                    a(href="/avaliacao/#{idAvaliacao}/cliente/#{cliente}", target="_blank") /avaliacao/#{idAvaliacao}/cliente/#{cliente}
+        section.row.section
+            h3 Detalhes da avaliação
+            h5 Período: #{avaliacao.mes} / #{avaliacao.ano}
+            if(avaliacao.resultados != null)
+                - var promotores = 0
+                - var neutros = 0
+                - var detratores = 0
+                each resultado in avaliacao.resultados
+                    if resultado.sinalizador == "Promotor"
+                        - promotores++
+                    if resultado.sinalizador == "Neutro"
+                        - neutros++
+                    if resultado.sinalizador == "Detrator"
+                        - detratores++
+
+                - var nps = Math.round(((promotores - detratores) / (promotores + neutros + detratores)) * 100)
+            if nps >= 80
+                #resultado.verde Resultado: 
+                    span.resultado #{nps}%
+            else if nps >= 79.99
+                #resultado.amarelo Resultado: 
+                    span.resultado #{nps}%
+            else if nps >= 0
+                #resultado.vermelho Resultado: 
+                    span.resultado #{nps}%
+            div.table-responsive
+                table.table.table-striped.table-condensed.table-hover
+                    thead
+                        th Nota
+                        th Motivo
+                        th Sinalizador
+                    tbody
+                    if(avaliacao.resultados != null)
+                        each resultado in avaliacao.resultados
+                            tr
+                                td #{resultado.nota}
+                                td #{resultado.motivo}
+                                td #{resultado.sinalizador}

@@ -1,3 +1,4 @@
+var util = require('./util')
 var firebase = require('firebase');
 
 firebase.initializeApp({
@@ -24,7 +25,7 @@ const createCliente = function (cliente, callback, callback2) {
     });
 }
 
-const setSinalizadorCliente = function (cliente) {
+const setSinalizadorCliente = function (cliente, callback) {
     database.ref('clientes/').orderByChild('id').equalTo(cliente.id).on("value", function (snapshot) {
         snapshot.forEach(function (data) {
             database.ref(`clientes/${data.key}/sinalizador/`).set(cliente.sinalizador)
@@ -47,16 +48,6 @@ const deleteCliente = function (id, callback, callback2) {
 }
 
 //AVALIAÇÕES
-const sinalizadorNota = function (nota) {
-    if (nota >= 9) {
-        return 'Promotor'
-    } else if (nota >= 7) {
-        return 'Neutro'
-    } else if (nota >= 0) {
-        return 'Detrator'
-    }
-}
-
 const createAvaliacao = function (avaliacao, callback, callback2) {
     database.ref('clientes/').once('value').then((snapshot) => {
         if ((snapshot.numChildren() * 0.2) < avaliacao.clientes.length) {
@@ -73,26 +64,25 @@ const createAvaliacao = function (avaliacao, callback, callback2) {
 }
 
 const salvarAvaliacao = function (avaliacao, callback, callback2) {
-    database.ref('avaliacoes/').orderByChild('id').equalTo(avaliacao.idAvaliacao).on("value", function (snapshot) {
+    database.ref('avaliacoes/').orderByChild('id').equalTo(avaliacao.idAvaliacao).once("value", function (snapshot) {
         snapshot.forEach(function (data) {
-            database.ref('avaliacoes/').orderByChild('id').equalTo(avaliacao.idAvaliacao).on("value", function () {
+            database.ref('avaliacoes/').orderByChild('id').equalTo(avaliacao.idAvaliacao).once("value", function () {
                 database.ref(`avaliacoes/${data.key}/resultados/${avaliacao.idCliente}/`).set({
                     motivo: avaliacao.motivo,
                     nota: avaliacao.nota,
-                    sinalizador: sinalizadorNota(avaliacao.nota)
+                    sinalizador: util.sinalizadorNota(avaliacao.nota)
                 }, (error) => {
-                    if (!error) {
-                        setSinalizadorCliente({
-                            id: avaliacao.idCliente,
-                            sinalizador: sinalizadorNota(avaliacao.nota)
-                        })
-                        callback()
-                    } else {
+                    if (error) {
                         callback2()
                     }
                 })
+                setSinalizadorCliente({
+                    id: avaliacao.idCliente,
+                    sinalizador: util.sinalizadorNota(avaliacao.nota)
+                })
             });
         });
+        callback()
     });
 }
 
